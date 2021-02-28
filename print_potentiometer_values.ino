@@ -23,13 +23,11 @@ void loop() {
   Serial.print(potTwoVal);
   Serial.print("\n");
 
-  
   // potThree
   potThreeVal = analogRead(potThreePin);
   Serial.print("potThree=");
   Serial.print(potThreeVal);
   Serial.print("\n");
 
-  
   delay(500);
 }
