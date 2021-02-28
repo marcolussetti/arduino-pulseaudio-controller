@@ -14,10 +14,14 @@ All included in the official Arduino UNO Starter Kit
 - Assorted cables
 
 ## Drawings
+Capacitors not pictured -- may not be necessary depending on how stable the input.
+
 ![](https://gist.githubusercontent.com/marcolussetti/87fcdbd1edf1c4dd0673b2a1df2b7dd8/raw/e659a19eafd44a0aa08bae0d2e2d957d79caffbb/drawings.png?s=500)
 
 
 ## Schematics
+Capacitors not pictured -- may not be necessary depending on how stable the input.
+
 ![](https://gist.githubusercontent.com/marcolussetti/87fcdbd1edf1c4dd0673b2a1df2b7dd8/raw/e659a19eafd44a0aa08bae0d2e2d957d79caffbb/schematics.png?s=500)
 
 ## Code
