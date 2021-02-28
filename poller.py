@@ -4,7 +4,11 @@ import time
 import pulsectl
 import serial
 
-# Constants, map pot to applications
+# Threshold to avoid changing too much
+PRECISION_MULTIPLIER = 0.025
+PRECISION = 3
+
+# Map pots to applications
 APPS_BY_POT = [
     [  # Music Pot
         "Spotify",
@@ -37,6 +41,11 @@ def process_input(line):
         pot = int(pot_str[3:])
 
         relative = abs(1023-int(val))/1023
+
+        # Round to threshold
+        relative_adj = round(PRECISION_MULTIPLIER * round(float(relative) / PRECISION_MULTIPLIER),
+                             PRECISION)
+
         if relative < 0:
             raise OverflowError(f"Invalid value: {pot}")
         if relative > 1:
@@ -45,7 +54,7 @@ def process_input(line):
         logging.error(e)
         return "fail", 0
 
-    return pot, relative
+    return pot, relative_adj
 
 def execute_pot(pulse, app_names, val):
     sinks = [sink for sink in pulse.sink_input_list()
@@ -55,6 +64,8 @@ def execute_pot(pulse, app_names, val):
 
 
 def main():
+    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(message)s')
+
     pulse = pulsectl.Pulse('app-volume-ctl')
     for i in range(10):
         try:
