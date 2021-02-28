@@ -1,6 +1,7 @@
+import logging
 import time
-import pulsectl
 
+import pulsectl
 import serial
 
 # Constants, map pot to applications
@@ -19,18 +20,30 @@ APPS_BY_POT = [
     ]
 ]
 
+# Store previous pot values to avoid double calling pulse
+pot_values = [
+    0,
+    0,
+    0
+]
+
 
 def process_input(line):
     command = line.decode().strip()
     try:
-        pot, val = command.split("=")
-    except:
-        return "failure", 0.0
-    relative = abs(1023-int(val))/1023
-    if relative < 0:
+        pot_str, val = command.split("=")
+        if not pot_str.startswith("pot"):
+            raise AttributeError(f"Invalid pot: {pot_str}")
+        pot = int(pot_str[3:])
+
+        relative = abs(1023-int(val))/1023
+        if relative < 0:
+            raise OverflowError(f"Invalid value: {pot}")
+        if relative > 1:
+            raise OverflowError(f"Invalid value: {pot}")
+    except Exception as e:
+        logging.error(e)
         return "fail", 0
-    elif relative > 1:
-        return "fail", 1
 
     return pot, relative
 
@@ -43,24 +56,22 @@ def execute_pot(pulse, app_names, val):
 
 def main():
     pulse = pulsectl.Pulse('app-volume-ctl')
-    for i in range(5):
+    for i in range(10):
         try:
             ser = serial.Serial(f"/dev/ttyACM{i}", timeout=5)
-            print(f"Listening for commands on /dev/ttyACM{i}")
+            logging.info(f"Listening for commands on /dev/ttyACM{i}")
             break
         except:
-            print(f"No device on /dev/ttyACM{i}")
+            logging.info(f"No device on /dev/ttyACM{i}")
 
     # Main loop
     while True:
         reading = ser.readline()
         pot, val = process_input(reading)
-        if pot == "potOne":
-            execute_pot(pulse, APPS_BY_POT[0], val)
-        elif pot == "potTwo":
-            execute_pot(pulse, APPS_BY_POT[1], val)
-        elif pot == "potThree":
-            execute_pot(pulse, APPS_BY_POT[2], val)
+        if pot != "fail" and val != pot_values[pot]:
+            logging.debug(f"Changing pot {pot} from {pot_values[pot]} to {pot_values[pot]}")
+            pot_values[pot] = val
+            execute_pot(pulse, APPS_BY_POT[pot], val)
 
         if not ser.inWaiting():
             time.sleep(0.1)

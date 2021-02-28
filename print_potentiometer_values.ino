@@ -1,9 +1,8 @@
-int const potOnePin = A0;
-int const potTwoPin = A1;
-int const potThreePin = A2;
-int potOneVal;
-int potTwoVal;
-int potThreeVal;
+const int POTS = 3;
+const int DELAY = 500;
+
+int potPids[] = {A0, A1, A2};
+int potVals[] = {0, 0, 0};
 
 void setup() {
   Serial.begin(9600);
@@ -11,23 +10,14 @@ void setup() {
 }
 
 void loop() {
-  // potOne
-  potOneVal = analogRead(potOnePin);
-  Serial.print("potOne=");
-  Serial.print(potOneVal);
-  Serial.print("\n");
+  for (int i = 0; i < POTS; i++) {
+    potVals[i] = analogRead(potPids[i]);
+    Serial.print("pot");
+    Serial.print(i);
+    Serial.print("=");
+    Serial.print(potsVals[i]);
+    Serial.print("\n");
+  }
 
-  // potTwo
-  potTwoVal = analogRead(potTwoPin);
-  Serial.print("potTwo=");
-  Serial.print(potTwoVal);
-  Serial.print("\n");
-
-  // potThree
-  potThreeVal = analogRead(potThreePin);
-  Serial.print("potThree=");
-  Serial.print(potThreeVal);
-  Serial.print("\n");
-
-  delay(500);
+  delay(DELAY);
 }
