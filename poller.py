@@ -80,7 +80,7 @@ def main():
         reading = ser.readline()
         pot, val = process_input(reading)
         if pot != "fail" and val != pot_values[pot]:
-            logging.debug(f"Changing pot {pot} from {pot_values[pot]} to {pot_values[pot]}")
+            logging.debug(f"Pot {pot}: {pot_values[pot]} => {pot}")
             pot_values[pot] = val
             execute_pot(pulse, APPS_BY_POT[pot], val)
 
