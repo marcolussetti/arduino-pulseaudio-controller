@@ -6,7 +6,7 @@ int potVals[] = {0, 0, 0};
 
 void setup() {
   Serial.begin(9600);
-  Serial.print("Started");
+  Serial.print("Started\n");
 }
 
 void loop() {
@@ -15,7 +15,7 @@ void loop() {
     Serial.print("pot");
     Serial.print(i);
     Serial.print("=");
-    Serial.print(potsVals[i]);
+    Serial.print(potVals[i]);
     Serial.print("\n");
   }
 
