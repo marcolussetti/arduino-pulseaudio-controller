@@ -35,18 +35,21 @@ def process_input(line):
     return pot, relative
 
 def execute_pot(pulse, app_names, val):
-    sinks = [sink for sink in pulse.sink_input_list() if sink.proplist["application.name"] in app_names]
+    sinks = [sink for sink in pulse.sink_input_list()
+             if sink.proplist["application.name"] in app_names]
     for sink in sinks:
         pulse.volume_set_all_chans(sink, val)
 
 
 def main():
     pulse = pulsectl.Pulse('app-volume-ctl')
-    ser = serial.Serial('/dev/ttyACM0', timeout=5)
-
-    # Clear log
-    while ser.inWaiting():
-        _ = ser.readline()
+    for i in range(5):
+        try:
+            ser = serial.Serial(f"/dev/ttyACM{i}", timeout=5)
+            print(f"Listening for commands on /dev/ttyACM{i}")
+            break
+        except:
+            print(f"No device on /dev/ttyACM{i}")
 
     # Main loop
     while True:
@@ -62,7 +65,7 @@ def main():
         if not ser.inWaiting():
             time.sleep(0.1)
         else:
-            ser.readline()  # Allows to catch up to input
+            _ = ser.readline()  # Allows to catch up to input
 
 if __name__ == "__main__":
     main()
