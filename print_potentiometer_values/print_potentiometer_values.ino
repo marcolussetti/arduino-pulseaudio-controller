@@ -1,5 +1,5 @@
 const int POTS = 3;
-const int DELAY = 500;
+const int DELAY = 100;
 
 int potPids[] = {A0, A1, A2};
 int potVals[] = {0, 0, 0};
