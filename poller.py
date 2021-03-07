@@ -16,6 +16,7 @@ APPS_BY_POT = [
     ],
     [  # Foreground Pot
         "csgo_linux64",  # Counter-Strike: Global Offensive
+        "StarCraft II (Retail)",
         "FMOD Ex App",  # Mini Metro
     ],
     [  # Meetings Pot
