@@ -18,10 +18,12 @@ APPS_BY_POT = [
         "csgo_linux64",  # Counter-Strike: Global Offensive
         "StarCraft II (Retail)",
         "FMOD Ex App",  # Mini Metro
+        "FSD-Win64-Shipping.exe",  # Deep Rock Galactic
     ],
     [  # Meetings Pot
         "WEBRTC VoiceEngine",  # Discord
         "Chromium",  # Slack (Electron), Teams (via Chromium browser), Webex (via Chromium Browser)
+        "telegram-desktop"
     ]
 ]
 
@@ -59,7 +61,7 @@ def process_input(line):
 
 def execute_pot(pulse, app_names, val):
     sinks = [sink for sink in pulse.sink_input_list()
-             if sink.proplist["application.name"] in app_names]
+             if "application.name" in sink.proplist and sink.proplist["application.name"] in app_names]
     for sink in sinks:
         pulse.volume_set_all_chans(sink, val)
 
