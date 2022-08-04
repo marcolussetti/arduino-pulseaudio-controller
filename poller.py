@@ -19,6 +19,13 @@ APPS_BY_POT = [
         "StarCraft II (Retail)",
         "FMOD Ex App",  # Mini Metro
         "FSD-Win64-Shipping.exe",  # Deep Rock Galactic
+        "hl",  # Northgard
+        "Suzerain.exe",  # Suzerain
+        "Wingspan.exe",  # Wingspan
+        "eu4",  # Europa Universalis 4
+        "stellaris",  # Stellaris
+        "hoi4",  # Hearts of Iron 4
+        "Root.exe",  # ROOT Boardgame
     ],
     [  # Meetings Pot
         "WEBRTC VoiceEngine",  # Discord
@@ -59,6 +66,7 @@ def process_input(line):
 
     return pot, relative_adj
 
+
 def execute_pot(pulse, app_names, val):
     sinks = [sink for sink in pulse.sink_input_list()
              if "application.name" in sink.proplist and sink.proplist["application.name"] in app_names]
@@ -91,6 +99,7 @@ def main():
             time.sleep(0.1)
         else:
             _ = ser.readline()  # Allows to catch up to input
+
 
 if __name__ == "__main__":
     main()
